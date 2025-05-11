@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .calculator-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e8f0fe;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            margin-top: 5px;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Percentage Calculator</h1>
+        
+        <!-- Calculator 1: X% of Y -->
+        <div class="calculator-section">
+            <h2>What is X% of Y?</h2>
+            <div class="input-group">
+                <label>X (Percentage)</label>
+                <input type="number" id="percentOfValue">
+            </div>
+            <div class="input-group">
+                <label>Y (Number)</label>
+                <input type="number" id="baseValue">
+            </div>
+            <button onclick="calculatePercentageOf()">Calculate</button>
+            <div class="result" id="result1"></div>
+            <div class="error" id="error1">Please enter valid numbers!</div>
+        </div>
+
+        <!-- Calculator 2: X is what % of Y -->
+        <div class="calculator-section">
+            <h2>X is what percent of Y?</h2>
+            <div class="input-group">
+                <label>X</label>
+                <input type="number" id="valueA">
+            </div>
+            <div class="input-group">
+                <label>Y</label>
+                <input type="number" id="valueB">
+            </div>
+            <button onclick="calculateWhatPercent()">Calculate</button>
+            <div class="result" id="result2"></div>
+            <div class="error" id="error2">Please enter valid numbers!</div>
+        </div>
+
+        <!-- Calculator 3: X is Y% of what -->
+        <div class="calculator-section">
+            <h2>X is Y% of what?</h2>
+            <div class="input-group">
+                <label>X</label>
+                <input type="number" id="partValue">
+            </div>
+            <div class="input-group">
+                <label>Y (Percentage)</label>
+                <input type="number" id="percentageValue">
+            </div>
+            <button onclick="calculatePercentageOfWhat()">Calculate</button>
+            <div class="result" id="result3"></div>
+            <div class="error" id="error3">Please enter valid numbers!</div>
+        </div>
+    </div>
+
+    <script>
+        function validateInputs(...inputs) {
+            return inputs.every(input => !isNaN(input) && input !== '');
+        }
+
+        function calculatePercentageOf() {
+            const percent = parseFloat(document.getElementById('percentOfValue').value);
+            const base = parseFloat(document.getElementById('baseValue').value);
+            const result = document.getElementById('result1');
+            const error = document.getElementById('error1');
+
+            if (validateInputs(percent, base)) {
+                const calculation = (percent / 100) * base;
+                result.innerHTML = `${percent}% of ${base} = ${calculation.toFixed(2)}`;
+                result.style.display = 'block';
+                error.style.display = 'none';
+            } else {
+                result.style.display = 'none';
+                error.style.display = 'block';
+            }
+        }
+
+        function calculateWhatPercent() {
+            const a = parseFloat(document.getElementById('valueA').value);
+            const b = parseFloat(document.getElementById('valueB').value);
+            const result = document.getElementById('result2');
+            const error = document.getElementById('error2');
+
+            if (validateInputs(a, b) && b !== 0) {
+                const percentage = (a / b) * 100;
+                result.innerHTML = `${a} is ${percentage.toFixed(2)}% of ${b}`;
+                result.style.display = 'block';
+                error.style.display = 'none';
+            } else {
+                result.style.display = 'none';
+                error.style.display = 'block';
+            }
+        }
+
+        function calculatePercentageOfWhat() {
+            const part = parseFloat(document.getElementById('partValue').value);
+            const percentage = parseFloat(document.getElementById('percentageValue').value);
+            const result = document.getElementById('result3');
+            const error = document.getElementById('error3');
+
+            if (validateInputs(part, percentage) && percentage !== 0) {
+                const whole = (part / (percentage / 100));
+                result.innerHTML = `${part} is ${percentage}% of ${whole.toFixed(2)}`;
+                result.style.display = 'block';
+                error.style.display = 'none';
+            } else {
+                result.style.display = 'none';
+                error.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
